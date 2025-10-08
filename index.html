@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skull King - Compteur de Points</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Librairie pour l'export PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <!-- ======== ÉCRAN DE CONFIGURATION ======== -->
+    <div id="setup-screen" class="screen active">
+        <header class="app-header">
+            <h1>Skull King</h1>
+            <p>Configuration de la partie</p>
+            <div class="theme-switcher">
+                <button id="theme-toggle-btn">Changer de Thème</button>
+            </div>
+        </header>
+        <main>
+            <form id="setup-form">
+                <div class="form-group">
+                    <label for="num-players">Nombre de joueurs (2-8):</label>
+                    <input type="number" id="num-players" min="2" max="8" value="4" required>
+                </div>
+
+                <div id="player-names-container"></div>
+
+                <div class="form-group">
+                    <label for="scoring-system">Système de points :</label>
+                    <select id="scoring-system">
+                        <option value="skull-king">Selon Skull King (Classique)</option>
+                        <option value="rascal">Selon Rascal (Équilibré)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="rascal-options" style="display:none;">
+                    <label>Variante Rascal :</label>
+                    <input type="checkbox" id="rascal-cannonball-mode">
+                    <label for="rascal-cannonball-mode">Activer le mode "Boulet de Canon"</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="game-variant">Nombre de manches :</label>
+                    <select id="game-variant">
+                        <option value="default">10 Manches (standard)</option>
+                        <option value="no-odd">Pas d'impair (2, 4, 6, 8, 10)</option>
+                        <option value="combat">Prêt au combat (6, 7, 8, 9, 10)</option>
+                        <option value="flash">Attaque éclair (5x5 cartes)</option>
+                        <option value="barrage">Tir de barrage (10x10 cartes)</option>
+                        <option value="whirlwind">Tourbillon (9, 7, 5, 3, 1)</option>
+                        <option value="bedtime">L'heure du dodo (1x1 carte)</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">Commencer la partie</button>
+                    <button type="button" id="load-game-btn">Reprendre une partie</button>
+                    <button type="button" id="test-mode-btn">Mode Test</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- ======== ÉCRAN DE JEU ======== -->
+    <div id="game-screen" class="screen">
+        <header class="app-header">
+            <h1 id="round-title">Manche 1 (1 carte)</h1>
+            <div class="game-controls">
+                <button id="save-game-btn">Sauvegarder</button>
+                <button id="back-round-btn">Manche Précédente</button>
+                <button id="end-game-btn">Terminer la partie</button>
+                <button type="button" id="cancel-game-btn" onclick="location.reload()">Annuler la partie</button>
+            </div>
+        </header>
+        <main>
+            <div id="scoresheet-container">
+                <!-- Le tableau des scores sera généré par JS -->
+            </div>
+            <div class="round-inputs-container">
+                <h2 id="current-round-inputs-title">Saisie pour la Manche 1</h2>
+                <div id="round-inputs"></div>
+                <button id="calculate-round-btn" class="btn-primary">Valider et passer à la manche suivante</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- ======== ÉCRAN DES RÉSULTATS ======== -->
+    <div id="results-screen" class="screen">
+        <header class="app-header">
+            <h1>Résultats de la partie</h1>
+        </header>
+        <main id="results-content">
+            <div id="winner-declaration"></div>
+            <div id="final-scores"></div>
+            <div id="stats-container">
+                <h3>Statistiques</h3>
+                <p id="best-bidder"></p>
+                <p id="most-bonus"></p>
+            </div>
+            <div class="button-group">
+                <button id="export-pdf-btn" class="btn-primary">Exporter en PDF</button>
+                <button id="new-game-btn">Nouvelle Partie</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
