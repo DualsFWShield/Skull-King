@@ -361,15 +361,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let rascalPoints = 0;
         const { bid, tricks, bonuses } = data;
 
-        if (bid === tricks) {
-            if (bid === 0) {
+        if (bid === 0) {
+            if (tricks === 0) {
                 bidPoints = 10 * roundNumber;
             } else {
-                bidPoints = 20 * bid;
+                bidPoints = -10 * roundNumber;
             }
-            if (bonuses.lootBonus) bonusPoints += 20;
         } else {
-            bidPoints = -10 * Math.abs(bid - tricks);
+            if (bid === tricks) {
+                bidPoints = 20 * bid;
+            } else {
+                bidPoints = -10 * Math.abs(bid - tricks);
+            }
+        }
+
+        if (bid === tricks && bonuses.lootBonus) {
+             bonusPoints += 20;
         }
 
         bonusPoints += bonuses.classic14s * 10;
