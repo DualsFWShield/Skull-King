@@ -2,16 +2,19 @@
 :root {
     /* Color Palette */
     --abyss-deep: #0B1026;
-    --abyss-surface: #1B2340; /* Slightly lighter for cards */
+    --abyss-surface: #1B2340;
+    /* Slightly lighter for cards */
     --pirate-gold: #D9A520;
     --pirate-gold-dim: #A67C00;
     --ocean-teal: #1F4068;
-    --blood-red: #D9463E; /* For errors/negative scores */
+    --blood-red: #D9463E;
+    /* For errors/negative scores */
     --ghost-white: rgba(240, 248, 255, 0.9);
     --glass-bg: rgba(27, 35, 64, 0.75);
-    --glass-border: rgba(217, 165, 32, 0.3); /* Gold tint border */
+    --glass-border: rgba(217, 165, 32, 0.3);
+    /* Gold tint border */
     --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-    
+
     /* Typography */
     --font-heading: 'Cinzel', serif;
     --font-body: 'Inter', sans-serif;
@@ -27,7 +30,7 @@
 body {
     font-family: var(--font-body);
     background-color: var(--abyss-deep);
-    background-image: 
+    background-image:
         radial-gradient(circle at 10% 20%, rgba(217, 165, 32, 0.05) 0%, transparent 20%),
         radial-gradient(circle at 90% 80%, rgba(31, 64, 104, 0.3) 0%, transparent 30%);
     color: var(--ghost-white);
@@ -37,16 +40,32 @@ body {
 }
 
 /* Typography Overrides */
-h1, h2, h3, h4, th {
+h1,
+h2,
+h3,
+h4,
+th {
     font-family: var(--font-heading);
     color: var(--pirate-gold);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-h1 { font-size: 2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-h2 { font-size: 1.8rem; border-bottom: 2px solid var(--glass-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
-h3 { font-size: 1.4rem; }
+h1 {
+    font-size: 2.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    font-size: 1.8rem;
+    border-bottom: 2px solid var(--glass-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-size: 1.4rem;
+}
 
 /* Layout Structure */
 .screen {
@@ -63,8 +82,15 @@ h3 { font-size: 1.4rem; }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Header */
@@ -87,6 +113,15 @@ h3 { font-size: 1.4rem; }
     font-size: 0.9rem;
     opacity: 0.7;
     margin-top: 0.2rem;
+}
+
+/* Explicit Game Controls style if missing */
+.game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
 }
 
 /* Main Content Area */
@@ -126,7 +161,8 @@ select {
     transition: all 0.3s ease;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: var(--pirate-gold);
     box-shadow: 0 0 15px rgba(217, 165, 32, 0.2);
@@ -143,7 +179,8 @@ input:focus, select:focus {
 button {
     padding: 0.8rem 1.8rem;
     border: none;
-    border-radius: 50px; /* Pill shape */
+    border-radius: 50px;
+    /* Pill shape */
     cursor: pointer;
     font-family: var(--font-heading);
     font-weight: 700;
@@ -174,7 +211,7 @@ button.btn-primary:hover {
 
 /* Theme Switcher - Hidden for Premium Only */
 .theme-switcher {
-    display: none; 
+    display: none;
 }
 
 /* Scoresheet Table */
@@ -191,9 +228,10 @@ button.btn-primary:hover {
     background: transparent;
 }
 
-.scoresheet th, .scoresheet td {
+.scoresheet th,
+.scoresheet td {
     padding: 1rem;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
 }
 
@@ -202,7 +240,7 @@ button.btn-primary:hover {
     position: sticky;
     top: 0;
     z-index: 10;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .scoresheet .player-name {
@@ -213,7 +251,7 @@ button.btn-primary:hover {
 }
 
 .scoresheet tr:nth-child(even) {
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .round-score strong {
@@ -235,10 +273,10 @@ button.btn-primary:hover {
 }
 
 .player-input-card {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 1.5rem;
     border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease;
 }
 
@@ -256,10 +294,61 @@ button.btn-primary:hover {
 
 /* Bonus Section */
 .bonus-section {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0, 0, 0, 0.2);
     padding: 1rem;
     border-radius: 8px;
     margin-top: 1rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+.bonus-details {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+}
+
+.bonus-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--pirate-gold);
+    list-style: none;
+    /* Hide default arrow */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bonus-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.bonus-details summary::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.bonus-details[open] summary::after {
+    content: '-';
+}
+
+.bonus-indicator {
+    font-size: 0.8rem;
+    font-weight: normal;
+    opacity: 0.7;
+    color: var(--ghost-white);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .bonus-section .form-group {
@@ -267,7 +356,7 @@ button.btn-primary:hover {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.8rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding-bottom: 0.5rem;
 }
 
@@ -320,8 +409,13 @@ input[type="checkbox"]:checked::after {
 }
 
 @keyframes glowPulse {
-    from { box-shadow: 0 0 10px rgba(217, 165, 32, 0.2); }
-    to { box-shadow: 0 0 30px rgba(217, 165, 32, 0.6); }
+    from {
+        box-shadow: 0 0 10px rgba(217, 165, 32, 0.2);
+    }
+
+    to {
+        box-shadow: 0 0 30px rgba(217, 165, 32, 0.6);
+    }
 }
 
 #winner-declaration h2 {
@@ -344,7 +438,7 @@ input[type="checkbox"]:checked::after {
 
 #final-scores td {
     padding: 1.2rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 1.2rem;
 }
 
@@ -357,7 +451,7 @@ input[type="checkbox"]:checked::after {
 
 #stats-container p {
     flex: 1;
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     padding: 1.5rem;
     border-radius: 12px;
     border: 1px solid var(--ocean-teal);
@@ -365,11 +459,57 @@ input[type="checkbox"]:checked::after {
     font-size: 1.1rem;
 }
 
+/* Game Controls Spacing */
+.game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    /* Center buttons */
+}
+
+/* Kraken Checkbox Alignment */
+.round-modifiers .checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center the toggle */
+    gap: 10px;
+}
+
+.kraken-label {
+    margin-bottom: 0;
+    /* Remove default label margin */
+    cursor: pointer;
+}
+
+/* Ensure buttons don't touch when wrapping */
+button {
+    margin-bottom: 0.5rem;
+}
+
 /* Mobile Adjustments */
 @media (max-width: 768px) {
-    h1 { font-size: 1.8rem; }
-    .screen { padding: 1rem; }
-    .app-header { flex-direction: column; text-align: center; gap: 1rem; }
-    .button-group { justify-content: center; }
-    #round-inputs { grid-template-columns: 1fr; }
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .screen {
+        padding: 1rem;
+    }
+
+    .app-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .button-group,
+    .game-controls {
+        justify-content: center;
+    }
+
+    #round-inputs {
+        grid-template-columns: 1fr;
+    }
 }

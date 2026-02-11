@@ -33,17 +33,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const mostBonusStat = document.getElementById('most-bonus');
 
     // --- Event Listeners ---
-    
+
     // Theme
     themeToggleBtn.addEventListener('click', toggleTheme);
-    
+
     // Setup
     numPlayersInput.addEventListener('input', updatePlayerNameInputs);
     scoringSystemSelect.addEventListener('change', () => {
         rascalOptionsDiv.style.display = scoringSystemSelect.value === 'rascal' ? 'block' : 'none';
     });
     setupForm.addEventListener('submit', startGame);
-    
+
     // Game
     calculateRoundBtn.addEventListener('click', processRound);
     backRoundBtn.addEventListener('click', goBackOneRound);
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGameBtn.addEventListener('click', loadGame);
     endGameBtn.addEventListener('click', showResults);
     testModeBtn.addEventListener('click', runTestMode);
-    
+
     // Results
     newGameBtn.addEventListener('click', () => switchScreen('setup'));
     exportPdfBtn.addEventListener('click', exportResultsToPDF);
@@ -101,19 +101,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function defineRounds(variant) {
         const rounds = {
-            'default':   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            'no-odd':    [2, 4, 6, 8, 10],
-            'combat':    [6, 7, 8, 9, 10],
-            'flash':     [5, 5, 5, 5, 5],
-            'barrage':   [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+            'default': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            'no-odd': [2, 4, 6, 8, 10],
+            'combat': [6, 7, 8, 9, 10],
+            'flash': [5, 5, 5, 5, 5],
+            'barrage': [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
             'whirlwind': [9, 7, 5, 3, 1],
-            'bedtime':   [1]
+            'bedtime': [1]
         };
         return rounds[variant];
     }
-    
+
     function startGame(e) {
-        if(e) e.preventDefault();
+        if (e) e.preventDefault();
 
         const numPlayers = parseInt(numPlayersInput.value);
         const playerNames = [];
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             calculateRoundBtn.style.display = 'none';
             return;
         }
-        
+
         calculateRoundBtn.style.display = 'block';
         let inputsHTML = '';
         const cardsThisRound = gameState.rounds[roundIndex];
@@ -203,49 +203,55 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="number" id="tricks-${index}" min="0" max="${cardsThisRound}" value="${tricks}" required>
                     </div>
 
-                    <h4>Bonus & Pouvoirs</h4>
-                    <div class="bonus-section">
-                        <div class="form-group">
-                            <label for="bonus-14-classic-${index}">Cartes 14 classiques (x10):</label>
-                            <input type="number" id="bonus-14-classic-${index}" min="0" value="${bonuses.classic14s || 0}">
+                    <details class="bonus-details">
+                        <summary>Bonus & Pouvoirs <span class="bonus-indicator">(cliquer pour ouvrir)</span></summary>
+                        <div class="bonus-section">
+                            <div class="form-group">
+                                <label for="bonus-14-classic-${index}">Cartes 14 classiques (x10):</label>
+                                <input type="number" id="bonus-14-classic-${index}" min="0" value="${bonuses.classic14s || 0}">
+                            </div>
+                            <div class="form-group">
+                                <label for="bonus-14-black-${index}">Carte 14 noire (20):</label>
+                                <input type="checkbox" id="bonus-14-black-${index}" ${bonuses.black14 ? 'checked' : ''}>
+                            </div>
+                            <div class="form-group">
+                                <label for="bonus-mermaid-${index}">Sirènes capturées (x20):</label>
+                                <input type="number" id="bonus-mermaid-${index}" min="0" value="${bonuses.mermaidByPirate || 0}">
+                            </div>
+                            <div class="form-group">
+                                <label for="bonus-pirate-${index}">Pirates capturés (x30):</label>
+                                <input type="number" id="bonus-pirate-${index}" min="0" value="${bonuses.pirateByKing || 0}">
+                            </div>
+                            <div class="form-group">
+                                <label for="bonus-king-${index}">Skull King capturé (40):</label>
+                                <input type="checkbox" id="bonus-king-${index}" ${bonuses.kingByMermaid ? 'checked' : ''}>
+                            </div>
+                            <div class="form-group">
+                                <label for="bonus-loot-${index}">Alliance Butin réussie (20):</label>
+                                <input type="checkbox" id="bonus-loot-${index}" ${bonuses.lootBonus ? 'checked' : ''}>
+                            </div>
+                            <div class="form-group">
+                                <label for="bonus-rascal-${index}">Pari de Rascal (0, 10, 20):</label>
+                                <input type="number" id="bonus-rascal-${index}" placeholder="N/A" step="10" value="${bonuses.rascalBet !== undefined && bonuses.rascalBet !== null ? bonuses.rascalBet : ''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="power-harry-${index}">Pouvoir d'Harry:</label>
+                                 <select id="power-harry-${index}">
+                                    <option value="0" ${!bonuses.harryModifier || bonuses.harryModifier === 0 ? 'selected' : ''}>Pas de modif.</option>
+                                    <option value="1" ${bonuses.harryModifier === 1 ? 'selected' : ''}>Mise +1</option>
+                                    <option value="-1" ${bonuses.harryModifier === -1 ? 'selected' : ''}>Mise -1</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="bonus-14-black-${index}">Carte 14 noire (20):</label>
-                            <input type="checkbox" id="bonus-14-black-${index}" ${bonuses.black14 ? 'checked' : ''}>
-                        </div>
-                        <div class="form-group">
-                            <label for="bonus-mermaid-${index}">Sirènes capturées (x20):</label>
-                            <input type="number" id="bonus-mermaid-${index}" min="0" value="${bonuses.mermaidByPirate || 0}">
-                        </div>
-                        <div class="form-group">
-                            <label for="bonus-pirate-${index}">Pirates capturés (x30):</label>
-                            <input type="number" id="bonus-pirate-${index}" min="0" value="${bonuses.pirateByKing || 0}">
-                        </div>
-                        <div class="form-group">
-                            <label for="bonus-king-${index}">Skull King capturé (40):</label>
-                            <input type="checkbox" id="bonus-king-${index}" ${bonuses.kingByMermaid ? 'checked' : ''}>
-                        </div>
-                        <div class="form-group">
-                            <label for="bonus-loot-${index}">Alliance Butin réussie (20):</label>
-                            <input type="checkbox" id="bonus-loot-${index}" ${bonuses.lootBonus ? 'checked' : ''}>
-                        </div>
-                        <div class="form-group">
-                            <label for="bonus-rascal-${index}">Pari de Rascal (0, 10, 20):</label>
-                            <input type="number" id="bonus-rascal-${index}" placeholder="N/A" step="10" value="${bonuses.rascalBet !== undefined && bonuses.rascalBet !== null ? bonuses.rascalBet : ''}">
-                        </div>
-                        <div class="form-group">
-                            <label for="power-harry-${index}">Pouvoir d'Harry:</label>
-                             <select id="power-harry-${index}">
-                                <option value="0" ${!bonuses.harryModifier || bonuses.harryModifier === 0 ? 'selected' : ''}>Pas de modif.</option>
-                                <option value="1" ${bonuses.harryModifier === 1 ? 'selected' : ''}>Mise +1</option>
-                                <option value="-1" ${bonuses.harryModifier === -1 ? 'selected' : ''}>Mise -1</option>
-                            </select>
-                        </div>
-                    </div>
+                    </details>
                 </div>
             `;
         });
         roundInputsContainer.innerHTML = inputsHTML;
+
+        // Reset Kraken toggle for new round
+        const krakenToggle = document.getElementById('kraken-played');
+        if (krakenToggle) krakenToggle.checked = false;
     }
 
     function updateGameScreenTitles() {
@@ -282,11 +288,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(`Veuillez remplir la mise et les plis pour ${gameState.players[i].name}.`);
                 return;
             }
-             if (rascalBet !== null && ![0, 10, 20].includes(rascalBet)) {
+            if (rascalBet !== null && ![0, 10, 20].includes(rascalBet)) {
                 alert(`Le pari de Rascal pour ${gameState.players[i].name} doit être 0, 10, 20 ou vide.`);
                 return;
             }
-            
+
             totalTricks += tricks;
             roundData.push({
                 originalBid,
@@ -304,10 +310,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-        
+
         const cardsThisRound = gameState.rounds[roundIndex];
-        if (totalTricks !== cardsThisRound) {
-            alert(`Le nombre total de plis (${totalTricks}) ne correspond pas au nombre de cartes distribuées (${cardsThisRound}). Veuillez vérifier votre saisie.`);
+        const krakenPlayed = document.getElementById('kraken-played').checked;
+        const expectedTricks = krakenPlayed ? cardsThisRound - 1 : cardsThisRound;
+
+        if (totalTricks !== expectedTricks) {
+            const msg = krakenPlayed
+                ? `Kraken joué : le total des plis (${totalTricks}) doit être égal à ${expectedTricks} (Cartes - 1).`
+                : `Le nombre total de plis (${totalTricks}) ne correspond pas au nombre de cartes distribuées (${cardsThisRound}).`;
+            alert(msg + " Veuillez vérifier votre saisie.");
             return;
         }
 
@@ -321,18 +333,18 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 scoreData = calculateSkullKingScore(data, cardsThisRound);
             }
-            
+
             gameState.players[i].scores[roundIndex] = { ...data, ...scoreData };
         }
-        
+
         recalculateTotalScores();
         gameState.currentRound++;
-        
+
         renderScoresheet();
         renderCurrentRoundInputs();
         updateGameScreenTitles();
     }
-    
+
     function goBackOneRound() {
         if (gameState.currentRound > 0) {
             gameState.currentRound--;
@@ -374,24 +386,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 bidPoints = -10 * Math.abs(bid - tricks);
             }
         }
+        // Bonuses are ONLY awarded if the bid is correct (Standard Rules)
+        // Exception: Rascal Bet is a separate wager (Win/Lose independent of round bid?
+        // Rule text: "Gagnez-les si vous misez correctement [le choix], perdez-les si vous échouez".
+        // We defaults to independent, but classic bonuses definitely require correct bid.
 
-        if (bid === tricks && bonuses.lootBonus) {
-             bonusPoints += 20;
+        if (bid === tricks) {
+            bonusPoints += bonuses.classic14s * 10;
+            if (bonuses.black14) bonusPoints += 20;
+            bonusPoints += bonuses.mermaidByPirate * 20;
+            bonusPoints += bonuses.pirateByKing * 30;
+            if (bonuses.kingByMermaid) bonusPoints += 40;
+            if (bonuses.lootBonus) bonusPoints += 20;
         }
 
-        bonusPoints += bonuses.classic14s * 10;
-        if (bonuses.black14) bonusPoints += 20;
-        bonusPoints += bonuses.mermaidByPirate * 20;
-        bonusPoints += bonuses.pirateByKing * 30;
-        if (bonuses.kingByMermaid) bonusPoints += 40;
-        
         if (bonuses.rascalBet !== null) {
+            // Rascal Bet is its own mini-game logic. "Bet 0/10/20. Win if correct."
+            // Assuming "Correct" means strict success of that specific gamble (usually tied to winning the trick or similar).
+            // However, simplicity implies it's added/subtracted.
+            // If the user selects the value, we assume they "Succeeded" or "Failed" the condition.
+            // Wait, the input is just "Value". We need to know if they WON it?
+            // The input field says "Pari de Rascal". It allows 0, 10, 20.
+            // Logic: If bid==tricks -> Positive. If bid!=tricks -> Negative?
+            // "Perdez-les si vous échouez" -> Fails if you essentially fail the condition.
+            // Given the lack of granular "Did you win the Rascal Bet?" toggle, we usually tie it to the Round Bid in app implementations
+            // OR we assume the user enters positive/negative?
+            // Current code: `rascalPoints = (bid === tricks) ? bonuses.rascalBet : -bonuses.rascalBet;`
+            // This ties it to the Round Bid. This seems consistent with "Misez correctement".
             rascalPoints = (bid === tricks) ? bonuses.rascalBet : -bonuses.rascalBet;
         }
 
         return { bidPoints, bonusPoints, roundTotal: bidPoints + bonusPoints + rascalPoints };
     }
-    
+
     function calculateRascalScore(data, roundNumber) {
         let bidPoints = 0;
         let bonusPoints = 0;
@@ -416,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let potentialBonus = (bonuses.mermaidByPirate * 20) + (bonuses.pirateByKing * 30);
         if (bonuses.kingByMermaid) potentialBonus += 40;
         if (bonuses.lootBonus) potentialBonus += 20;
-        
+
         bonusPoints = Math.round(potentialBonus * bonusMultiplier);
         bonusPoints += bonuses.classic14s * 10; // 14 bonus is always full
         if (bonuses.black14) bonusPoints += 20; // 14 bonus is always full
@@ -424,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (bonuses.rascalBet !== null) {
             rascalPoints = (bid === tricks) ? bonuses.rascalBet : -bonuses.rascalBet;
         }
-        
+
         return { bidPoints, bonusPoints, roundTotal: bidPoints + bonusPoints + rascalPoints };
     }
 
@@ -434,9 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Aucune manche n'a été jouée !");
             return;
         }
-        
+
         const sortedPlayers = [...gameState.players].sort((a, b) => b.totalScore - a.totalScore);
-        
+
         const winner = sortedPlayers[0];
         winnerDeclaration.innerHTML = `<h2>Le vainqueur est ${winner.name} !</h2><p>Avec un score de ${winner.totalScore} points.</p>`;
 
@@ -446,17 +473,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         scoresTable += `</tbody></table>`;
         finalScoresContainer.innerHTML = scoresTable;
-        
-        const bestBidder = gameState.players.sort((a,b) => (b.correctBids / b.scores.length) - (a.correctBids / a.scores.length))[0];
+
+        const bestBidder = gameState.players.sort((a, b) => (b.correctBids / b.scores.length) - (a.correctBids / a.scores.length))[0];
         const bidAccuracy = (bestBidder.correctBids / bestBidder.scores.length * 100).toFixed(1);
         bestBidderStat.textContent = `Meilleur Parieur : ${bestBidder.name} (${bidAccuracy}% de mises correctes)`;
 
-        const mostBonus = gameState.players.sort((a,b) => b.bonusPoints - a.bonusPoints)[0];
+        const mostBonus = gameState.players.sort((a, b) => b.bonusPoints - a.bonusPoints)[0];
         mostBonusStat.textContent = `Plus de Bonus : ${mostBonus.name} (${mostBonus.bonusPoints} points bonus)`;
 
         switchScreen('results');
     }
-    
+
     // --- Save/Load Logic ---
     function saveGame() {
         if (!gameState.players) {
@@ -473,18 +500,18 @@ document.addEventListener('DOMContentLoaded', () => {
             gameState = JSON.parse(savedState);
             numPlayersInput.value = gameState.players.length;
             updatePlayerNameInputs();
-            gameState.players.forEach((p,i) => document.getElementById(`player${i+1}`).value = p.name);
+            gameState.players.forEach((p, i) => document.getElementById(`player${i + 1}`).value = p.name);
             scoringSystemSelect.value = gameState.settings.scoringSystem;
             document.getElementById('rascal-cannonball-mode').checked = gameState.settings.useCannonball;
             gameVariantSelect.value = gameState.settings.gameVariant;
-            
+
             setupGameScreen();
             switchScreen('game');
         } else {
             alert("Aucune partie sauvegardée trouvée.");
         }
     }
-    
+
     // --- Test & PDF Export ---
     function runTestMode() {
         numPlayersInput.value = 3;
@@ -502,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             processRound();
         }
-        
+
         simulateRound([0, 1, 0], [0, 1, 0]);
         simulateRound([1, 0, 1], [0, 1, 1]);
         simulateRound([2, 1, 0], [2, 0, 1]);
@@ -513,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function exportResultsToPDF() {
         const { jsPDF } = window.jspdf;
         const content = document.getElementById('results-content');
-        
+
         html2canvas(content).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF('p', 'mm', 'a4');
